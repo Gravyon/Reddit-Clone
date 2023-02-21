@@ -2,6 +2,8 @@ import { authModalState } from "@/atoms/authModalAtom";
 import { Input, Button, Flex, Text } from "@chakra-ui/react";
 import React, { useState } from "react";
 import { useSetRecoilState } from "recoil";
+import { useCreateUserWithEmailAndPassword } from "react-firebase-hooks/auth";
+import { auth } from "../../../firebase/clientApp";
 
 const SignUp: React.FC = () => {
   const setModalAuthState = useSetRecoilState(authModalState);
@@ -10,8 +12,21 @@ const SignUp: React.FC = () => {
     password: "",
     confirmPassword: "",
   });
+  const [error, setError] = useState("");
+  const [createUserWithEmailAndPassword, user, loading, userError] =
+    useCreateUserWithEmailAndPassword(auth);
+
   //firebase
-  const onSubmit = () => {};
+  const onSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    if (signUpForm.password !== signUpForm.confirmPassword) {
+      setError("Password doesn't match");
+      console.log("Password doesn't match");
+      return;
+    }
+    createUserWithEmailAndPassword(signUpForm.email, signUpForm.password);
+  };
+
   const onChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     // UPDATE form state
     setSignUpForm((prev) => ({
@@ -43,9 +58,7 @@ const SignUp: React.FC = () => {
           borderColor: "blue.500",
         }}
         bg="gray.50"
-        onChange={() => {
-          onChange;
-        }}
+        onChange={onChange}
       />
       <Input
         required
@@ -67,9 +80,7 @@ const SignUp: React.FC = () => {
           borderColor: "blue.500",
         }}
         bg="gray.50"
-        onChange={() => {
-          onChange;
-        }}
+        onChange={onChange}
       />
       <Input
         required
@@ -91,10 +102,13 @@ const SignUp: React.FC = () => {
           borderColor: "blue.500",
         }}
         bg="gray.50"
-        onChange={() => {
-          onChange;
-        }}
+        onChange={onChange}
       />
+      {error && (
+        <Text textAlign="center" color="red" fontSize="10pt">
+          {error}
+        </Text>
+      )}
       <Button
         variant="signup"
         width="100%"
@@ -102,6 +116,7 @@ const SignUp: React.FC = () => {
         mt={2}
         mb={2}
         type="submit"
+        isLoading={loading}
       >
         Sign Up
       </Button>
