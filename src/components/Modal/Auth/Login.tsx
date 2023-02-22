@@ -1,6 +1,9 @@
 import { authModalState } from "@/atoms/authModalAtom";
+import { auth } from "@/firebase/clientApp";
+import { FIREBASE_ERRORS } from "@/firebase/errors";
 import { Button, Flex, Input, Text } from "@chakra-ui/react";
 import React, { useState } from "react";
+import { useSignInWithEmailAndPassword } from "react-firebase-hooks/auth";
 import { useSetRecoilState } from "recoil";
 
 type LoginProps = {};
@@ -12,7 +15,13 @@ const Login: React.FC<LoginProps> = () => {
     password: "",
   });
   //firebase
-  const onSubmit = () => {};
+  const [signInWithEmailAndPassword, user, loading, error] =
+    useSignInWithEmailAndPassword(auth);
+
+  const onSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    signInWithEmailAndPassword(loginForm.email, loginForm.password);
+  };
   const onChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     // UPDATE form state
     setLoginForm((prev) => ({
@@ -72,6 +81,38 @@ const Login: React.FC<LoginProps> = () => {
           onChange;
         }}
       />
+      <Text textAlign="center" color="red" fontSize="10pt">
+        {FIREBASE_ERRORS[error?.message as keyof typeof FIREBASE_ERRORS]}
+      </Text>
+      <Flex mt={3} mb={3} fontSize="9pt" justifyContent="center">
+        <Text>Forgot your</Text>
+        <Text
+          as="u"
+          ml={1}
+          textColor="blue.500"
+          fontWeight={700}
+          cursor="pointer"
+          onClick={() =>
+            setModalAuthState((prev) => ({ ...prev, view: "resetPassword" }))
+          }
+        >
+          username
+        </Text>
+        <Text ml={1}>or</Text>
+        <Text
+          as="u"
+          ml={1}
+          textColor="blue.500"
+          fontWeight={700}
+          cursor="pointer"
+          onClick={() =>
+            setModalAuthState((prev) => ({ ...prev, view: "resetPassword" }))
+          }
+        >
+          password
+        </Text>
+        <Text ml={1}>?</Text>
+      </Flex>
       <Button
         variant="signup"
         width="100%"
@@ -85,6 +126,7 @@ const Login: React.FC<LoginProps> = () => {
       <Flex fontSize="9pt" justifyContent="center">
         <Text mr={1}>New to Reddit?</Text>
         <Text
+          as="u"
           textColor="blue.500"
           fontWeight={700}
           cursor="pointer"

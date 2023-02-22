@@ -4,6 +4,7 @@ import React, { useState } from "react";
 import { useSetRecoilState } from "recoil";
 import { useCreateUserWithEmailAndPassword } from "react-firebase-hooks/auth";
 import { auth } from "../../../firebase/clientApp";
+import { FIREBASE_ERRORS } from "../../../firebase/errors";
 
 const SignUp: React.FC = () => {
   const setModalAuthState = useSetRecoilState(authModalState);
@@ -12,6 +13,7 @@ const SignUp: React.FC = () => {
     password: "",
     confirmPassword: "",
   });
+
   const [error, setError] = useState("");
   const [createUserWithEmailAndPassword, user, loading, userError] =
     useCreateUserWithEmailAndPassword(auth);
@@ -104,11 +106,14 @@ const SignUp: React.FC = () => {
         bg="gray.50"
         onChange={onChange}
       />
-      {error && (
-        <Text textAlign="center" color="red" fontSize="10pt">
-          {error}
-        </Text>
-      )}
+      <Text textAlign="center" color="red" fontSize="10pt">
+        {error ||
+          FIREBASE_ERRORS[
+            // this line here is "fixing a typescript error", basically typecasts the variable so typescript knows what type it is
+            userError?.message as keyof typeof FIREBASE_ERRORS
+          ]}
+      </Text>
+
       <Button
         variant="signup"
         width="100%"
@@ -120,9 +125,10 @@ const SignUp: React.FC = () => {
       >
         Sign Up
       </Button>
-      <Flex fontSize="9pt" justifyContent="center">
+      <Flex fontSize="9pt">
         <Text mr={1}>Already a redditor?</Text>
         <Text
+          as="u"
           textColor="blue.500"
           fontWeight={700}
           cursor="pointer"
