@@ -1,10 +1,12 @@
 import { authModalState } from "@/atoms/authModalAtom";
 import { Input, Button, Flex, Text } from "@chakra-ui/react";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useSetRecoilState } from "recoil";
 import { useCreateUserWithEmailAndPassword } from "react-firebase-hooks/auth";
-import { auth } from "../../../firebase/clientApp";
+import { auth, firestore } from "../../../firebase/clientApp";
 import { FIREBASE_ERRORS } from "../../../firebase/errors";
+import { User } from "firebase/auth";
+import { addDoc, collection } from "firebase/firestore";
 
 const SignUp: React.FC = () => {
   const setModalAuthState = useSetRecoilState(authModalState);
@@ -15,7 +17,7 @@ const SignUp: React.FC = () => {
   });
 
   const [error, setError] = useState("");
-  const [createUserWithEmailAndPassword, user, loading, userError] =
+  const [createUserWithEmailAndPassword, userCred, loading, userError] =
     useCreateUserWithEmailAndPassword(auth);
 
   //firebase
@@ -37,6 +39,27 @@ const SignUp: React.FC = () => {
       [event.target.name]: event.target.value,
     }));
   };
+
+  // solution for using functions without payment
+  const createUserDocument = async (user: User) => {
+    await addDoc(
+      collection(firestore, "users"),
+      JSON.parse(JSON.stringify(user))
+    );
+  };
+
+  useEffect(() => {
+    const newUser = {
+      uid: userCred?.user.uid,
+      email: userCred?.user.email,
+      displayName: userCred?.user.displayName,
+      providerData: userCred?.user.providerData,
+    };
+    if (userCred) {
+      // JSON is needed here so typescript or firestore stop complaining
+      createUserDocument(JSON.parse(JSON.stringify(newUser)));
+    }
+  }, [userCred]);
 
   return (
     <form onSubmit={onSubmit}>
