@@ -1,30 +1,37 @@
+import { authModalState } from "@/atoms/authModalAtom";
+import { communityState } from "@/atoms/communitiesAtom";
+import { auth } from "@/firebase/clientApp";
 import { ChevronDownIcon } from "@chakra-ui/icons";
 import {
+  Flex,
+  Icon,
   Menu,
   MenuButton,
-  Button,
-  MenuList,
-  MenuItem,
-  Icon,
-  Flex,
   MenuDivider,
+  MenuItem,
+  MenuList,
   Text,
 } from "@chakra-ui/react";
-import React from "react";
 import { signOut, User } from "firebase/auth";
-import { FaRedditSquare } from "react-icons/fa";
-import { VscAccount } from "react-icons/vsc";
-import { IoSparkles } from "react-icons/io5";
+import React from "react";
 import { CgProfile } from "react-icons/cg";
+import { FaRedditSquare } from "react-icons/fa";
+import { IoSparkles } from "react-icons/io5";
 import { MdOutlineLogin } from "react-icons/md";
-import { auth } from "@/firebase/clientApp";
-import { useSetRecoilState } from "recoil";
-import { authModalState } from "@/atoms/authModalAtom";
+import { VscAccount } from "react-icons/vsc";
+import { useResetRecoilState, useSetRecoilState } from "recoil";
 
 type UserMenuProps = { user?: User | null };
 
 const UserMenu: React.FC<UserMenuProps> = ({ user }) => {
   const setModalAuthState = useSetRecoilState(authModalState);
+  const resetCommunityState = useResetRecoilState(communityState);
+
+  const logout = async () => {
+    await signOut(auth);
+    // clear community state
+    resetCommunityState();
+  };
 
   return (
     <Menu>
@@ -82,7 +89,7 @@ const UserMenu: React.FC<UserMenuProps> = ({ user }) => {
             </MenuItem>
             <MenuDivider />
             <MenuItem
-              onClick={() => signOut(auth)}
+              onClick={logout}
               fontSize={"10pt"}
               fontWeight={700}
               _hover={{ bg: "blue.500", color: "white" }}
