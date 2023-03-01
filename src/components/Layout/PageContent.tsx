@@ -11,16 +11,17 @@ const PageContent: React.FC<PageContentProps> = ({ children }) => {
   return (
     <Flex>
       <Flex>
-        {/* Lefthand side */}
+        {/* Left side */}
         {/* this needs to be expressed this way so typescript stops complaining */}
+        {/* This is a type assertion. It's a way to tell TypeScript that you know better than it does what the type of something is. */}
         <Flex>{children && children[0 as keyof typeof children]}</Flex>
 
-        {/* Righthand side */}
+        {/* Right side */}
         {/* this needs to be expressed this way so typescript stops complaining */}
+        {/* This is a type assertion. It's a way to tell TypeScript that you know better than it does what the type of something is. */}
         <Flex>{children && children[1 as keyof typeof children]}</Flex>
       </Flex>
     </Flex>
   );
 };
-
 export default PageContent;
