@@ -1,5 +1,7 @@
 import { Post } from "@/atoms/postAtom";
 import {
+  Alert,
+  AlertIcon,
   Flex,
   Icon,
   Image,
@@ -101,6 +103,12 @@ const PostItem: React.FC<PostItemProps> = ({
         />
       </Flex>
       <Flex direction="column" width="100%">
+        {error && (
+          <Alert status="error">
+            <AlertIcon />
+            <Text mr={2}>{error}</Text>
+          </Alert>
+        )}
         <Stack spacing={1} p="10px">
           <Stack direction="row" spacing={0.6} align="center" fontSize="9pt">
             {/* Home page check */}
