@@ -3,6 +3,7 @@ import CreatePostLink from "@/components/Community/CreatePostLink";
 import Header from "@/components/Community/Header";
 import CommunityNotFound from "@/components/Community/NotFound";
 import PageContent from "@/components/Layout/PageContent";
+import Posts from "@/components/Posts/Posts";
 import { firestore } from "@/firebase/clientApp";
 import { doc, getDoc } from "firebase/firestore";
 import { GetServerSidePropsContext } from "next";
@@ -14,7 +15,7 @@ type CommunityPageProps = {
 };
 
 const CommunityPage: React.FC<CommunityPageProps> = ({ communityData }) => {
-  console.log(communityData);
+  // console.log(communityData);
 
   if (!communityData) {
     return <CommunityNotFound />;
@@ -26,6 +27,7 @@ const CommunityPage: React.FC<CommunityPageProps> = ({ communityData }) => {
       <PageContent>
         <>
           <CreatePostLink />
+          <Posts communityData={communityData} />
         </>
         <>
           <div>Righthand side</div>
@@ -35,7 +37,7 @@ const CommunityPage: React.FC<CommunityPageProps> = ({ communityData }) => {
   );
 };
 
-// NextJS's way to pre-rendering the page with all the data
+// NextJS's way for pre-rendering the page with all the data
 export async function getServerSideProps(context: GetServerSidePropsContext) {
   // get community data and paste to out client component
   try {

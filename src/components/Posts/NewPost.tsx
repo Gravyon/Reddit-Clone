@@ -1,4 +1,12 @@
-import { Flex, Icon } from "@chakra-ui/react";
+import {
+  Alert,
+  AlertDescription,
+  AlertIcon,
+  AlertTitle,
+  Flex,
+  Icon,
+  Text,
+} from "@chakra-ui/react";
 import React, { useState } from "react";
 import { IoDocumentText, IoImageOutline } from "react-icons/io5";
 import { BiPoll } from "react-icons/bi";
@@ -41,6 +49,7 @@ const NewPost: React.FC<NewPostProps> = ({ user }) => {
   const [textInputs, setTextInputs] = useState({ title: "", body: "" });
   const [selectedFile, setSelectedFile] = useState<string>();
   const [loading, setLoading] = useState(false);
+  const [error, setError] = useState(false);
 
   const handleCreatePost = async () => {
     const { communityId } = router.query;
@@ -74,12 +83,13 @@ const NewPost: React.FC<NewPostProps> = ({ user }) => {
         //update post doc with the image/file
         await updateDoc(postDocRef, { imageURL: downloadURL });
       }
+      //redirect user back to community page
+      router.back();
     } catch (error: any) {
       console.log("CreatePost error", error.message);
+      setError(true);
     }
     setLoading(false);
-    //redirect user back to community page
-    // router.back();
   };
 
   const onSelectImage = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -135,6 +145,12 @@ const NewPost: React.FC<NewPostProps> = ({ user }) => {
           />
         )}
       </Flex>
+      {error && (
+        <Alert status="error">
+          <AlertIcon />
+          <Text mr={2}>Error creating post</Text>
+        </Alert>
+      )}
     </Flex>
   );
 };
