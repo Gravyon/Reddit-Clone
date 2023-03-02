@@ -1,5 +1,13 @@
 import { Post } from "@/atoms/postAtom";
-import { Flex, Icon, Image, Skeleton, Stack, Text } from "@chakra-ui/react";
+import {
+  Flex,
+  Icon,
+  Image,
+  Skeleton,
+  Spinner,
+  Stack,
+  Text,
+} from "@chakra-ui/react";
 import moment from "moment";
 import React, { useState } from "react";
 import { BsChat } from "react-icons/bs";
@@ -35,11 +43,12 @@ const PostItem: React.FC<PostItemProps> = ({
 }) => {
   const [loadingImage, setLoadingImage] = useState(true);
   const [error, setError] = useState("");
+  const [loadingDelete, setLoadingDelete] = useState(false);
 
   const handleDelete = async () => {
+    setLoadingDelete(true);
     try {
       const success = await onDeletePost(post);
-
       if (!success) {
         console.log("Failed to delete post");
       }
@@ -48,6 +57,7 @@ const PostItem: React.FC<PostItemProps> = ({
       console.log("handleDelete error", error.message);
       setError(error.message);
     }
+    setLoadingDelete(false);
   };
 
   return (
@@ -158,8 +168,14 @@ const PostItem: React.FC<PostItemProps> = ({
               _hover={{ bg: "gray.200" }}
               onClick={handleDelete}
             >
-              <Icon as={AiOutlineDelete} mr={2} />
-              <Text fontSize={"9pt"}>Delete</Text>
+              {loadingDelete ? (
+                <Spinner size="sm" />
+              ) : (
+                <>
+                  <Icon as={AiOutlineDelete} mr={2} />
+                  <Text fontSize={"9pt"}>Delete</Text>
+                </>
+              )}
             </Flex>
           )}
         </Flex>

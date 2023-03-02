@@ -31,7 +31,7 @@ type NewPostProps = {
   user: User;
 };
 
-const formTabs: TabItem[] = [
+const formTabs: tabItem[] = [
   { title: "Post", icon: IoDocumentText },
   { title: "Images & Video", icon: IoImageOutline },
   { title: "Link", icon: BsLink45Deg },
@@ -39,7 +39,7 @@ const formTabs: TabItem[] = [
   { title: "Talk", icon: BsMic },
 ];
 
-export type TabItem = {
+export type tabItem = {
   title: string;
   icon: typeof Icon.arguments;
 };
