@@ -71,7 +71,7 @@ const useCommunityData = () => {
       // create community snippet if user joins
       const newSnippet: CommunitySnippet = {
         communityId: communityData.id,
-        imageURL: communityData.imageURl || "",
+        imageURL: communityData.imageURL || "",
       };
       batch.set(
         doc(
