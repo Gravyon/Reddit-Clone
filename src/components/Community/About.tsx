@@ -1,4 +1,5 @@
 import { Community } from "@/atoms/communitiesAtom";
+import { auth } from "@/firebase/clientApp";
 import {
   Box,
   Button,
@@ -11,7 +12,8 @@ import {
 import moment from "moment";
 import Link from "next/link";
 import { useRouter } from "next/router";
-import React from "react";
+import React, { useRef } from "react";
+import { useAuthState } from "react-firebase-hooks/auth";
 import { HiOutlineDotsHorizontal } from "react-icons/hi";
 import { RiCakeLine } from "react-icons/ri";
 type AboutProps = {
@@ -20,8 +22,10 @@ type AboutProps = {
 
 const About: React.FC<AboutProps> = ({ communityData }) => {
   const router = useRouter();
+  const [user] = useAuthState(auth);
+  const selectedFileRef = useRef<string>();
   return (
-    <Box position="sticky" top="14px" flexGrow={1}>
+    <Box position="sticky" top="14px">
       <Flex
         justify="space-between"
         align="center"
@@ -70,6 +74,24 @@ const About: React.FC<AboutProps> = ({ communityData }) => {
               Create Post
             </Button>
           </Link>
+          {user?.uid === communityData.creatorId && (
+            <>
+              <Divider />
+              <Stack spacing={1} fontSize="10pt">
+                <Text fontWeight={600}>Admin</Text>
+                <Flex align="center" justify="space-between">
+                  <Text
+                    color="blue.500"
+                    cursor="pointer"
+                    _hover={{ textDecoration: "underline" }}
+                    onClick={() => {}}
+                  >
+                    Change Image
+                  </Text>
+                </Flex>
+              </Stack>
+            </>
+          )}
         </Stack>
       </Flex>
     </Box>

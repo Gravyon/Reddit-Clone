@@ -26,6 +26,7 @@ import {
 } from "firebase/firestore";
 import { firestore, storage } from "@/firebase/clientApp";
 import { getDownloadURL, ref, uploadString } from "firebase/storage";
+import useSelectFile from "@/hooks/useSelectFile";
 
 type NewPostProps = {
   user: User;
@@ -47,7 +48,7 @@ const NewPost: React.FC<NewPostProps> = ({ user }) => {
   const router = useRouter();
   const [selectedTab, setSelectedTab] = useState(formTabs[0].title);
   const [textInputs, setTextInputs] = useState({ title: "", body: "" });
-  const [selectedFile, setSelectedFile] = useState<string>();
+  const { selectedFile, setSelectedFile, onSelectFile } = useSelectFile();
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(false);
 
@@ -92,20 +93,6 @@ const NewPost: React.FC<NewPostProps> = ({ user }) => {
     setLoading(false);
   };
 
-  const onSelectImage = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const reader = new FileReader();
-    if (e.target.files?.[0]) {
-      reader.readAsDataURL(e.target.files?.[0]);
-    }
-
-    reader.onload = (readerEvent) => {
-      if (readerEvent.target?.result) {
-        // typecasted just in case, since this will always take one value of type string
-        setSelectedFile(readerEvent.target.result as string);
-      }
-    };
-  };
-
   const onTextChange = (
     e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
   ) => {
@@ -139,7 +126,7 @@ const NewPost: React.FC<NewPostProps> = ({ user }) => {
         {selectedTab === "Images & Video" && (
           <ImageUpload
             selectedFile={selectedFile}
-            onSelectImage={onSelectImage}
+            onSelectImage={onSelectFile}
             setSelectedFile={setSelectedFile}
             setSelectedTab={setSelectedTab}
           />
