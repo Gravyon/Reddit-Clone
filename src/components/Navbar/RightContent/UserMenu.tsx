@@ -19,18 +19,15 @@ import { FaRedditSquare } from "react-icons/fa";
 import { IoSparkles } from "react-icons/io5";
 import { MdOutlineLogin } from "react-icons/md";
 import { VscAccount } from "react-icons/vsc";
-import { useResetRecoilState, useSetRecoilState } from "recoil";
+import { useSetRecoilState } from "recoil";
 
 type UserMenuProps = { user?: User | null };
 
 const UserMenu: React.FC<UserMenuProps> = ({ user }) => {
   const setModalAuthState = useSetRecoilState(authModalState);
-  const resetCommunityState = useResetRecoilState(communityState);
 
   const logout = async () => {
     await signOut(auth);
-    // clear community state
-    resetCommunityState();
   };
 
   return (
