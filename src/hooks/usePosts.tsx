@@ -1,3 +1,4 @@
+import { authModalState } from "@/atoms/authModalAtom";
 import { communityState } from "@/atoms/communitiesAtom";
 import { Post, postState, PostVote } from "@/atoms/postAtom";
 import { auth, firestore, storage } from "@/firebase/clientApp";
@@ -11,17 +12,31 @@ import {
   writeBatch,
 } from "firebase/firestore";
 import { deleteObject, ref } from "firebase/storage";
+import { useRouter } from "next/router";
 import { useEffect } from "react";
 import { useAuthState } from "react-firebase-hooks/auth";
-import { useRecoilState, useRecoilValue } from "recoil";
+import { useRecoilState, useRecoilValue, useSetRecoilState } from "recoil";
 
 const usePosts = () => {
   const [postStateValue, setPostStateValue] = useRecoilState(postState);
   const [user] = useAuthState(auth);
+  const router = useRouter();
   const currentCommunity = useRecoilValue(communityState).currentCommunity;
+  const setAuthModalState = useSetRecoilState(authModalState);
 
-  const onVote = async (post: Post, vote: number, communityId: string) => {
+  const onVote = async (
+    e: React.MouseEvent<SVGElement, MouseEvent>,
+    post: Post,
+    vote: number,
+    communityId: string
+  ) => {
+    // prevents upvote or downvote buttons from rerouting the user
+    e.stopPropagation();
     // check for user, if not open auth modal
+    if (!user?.uid) {
+      setAuthModalState({ open: true, view: "login" });
+      return;
+    }
     try {
       const { voteStatus } = post;
       const existingVote = postStateValue.postVotes.find(
@@ -93,16 +108,7 @@ const usePosts = () => {
           voteChange = 2 * vote;
         }
       }
-      // update post doc
-      // ! is needed to typescript knows post.id is a valid
-      const postRef = doc(firestore, "posts", post.id!);
-      batch.update(postRef, {
-        voteStatus: voteStatus + voteChange,
-      });
       // update state with updated values
-      // writes the changes
-      await batch.commit();
-
       const postIndex = postStateValue.posts.findIndex(
         (item) => item.id === post.id
       );
@@ -113,12 +119,27 @@ const usePosts = () => {
         posts: updatedPosts,
         postVotes: updatedPostVotes,
       }));
+
+      if (postStateValue.selectedPost) {
+        setPostStateValue((prev) => ({ ...prev, selectedPost: updatedPost }));
+      }
+      // update post doc
+      // ! is needed to typescript knows post.id is a valid
+      const postRef = doc(firestore, "posts", post.id!);
+      batch.update(postRef, {
+        voteStatus: voteStatus + voteChange,
+      });
+      // writes the changes
+      await batch.commit();
     } catch (error: any) {
       console.log("onVote error", error.message);
     }
   };
 
-  const onSelectPost = () => {};
+  const onSelectPost = (post: Post) => {
+    setPostStateValue((prev) => ({ ...prev, selectedPost: post }));
+    router.push(`/r/${post.communityId}/comments/${post.id}`);
+  };
   // in here, typescript wants to know the parameter type and the return type
   const onDeletePost = async (post: Post): Promise<boolean> => {
     try {

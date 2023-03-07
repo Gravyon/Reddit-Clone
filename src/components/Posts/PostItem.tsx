@@ -22,14 +22,20 @@ import {
   IoArrowUpCircleSharp,
   IoBookmarkOutline,
 } from "react-icons/io5";
+import { useRouter } from "next/router";
 
 type PostItemProps = {
   post: Post;
   userIsCreator: boolean;
   userVoteValue?: number;
-  onVote: (post: Post, vote: number, communityId: string) => void;
+  onVote: (
+    e: React.MouseEvent<SVGElement, MouseEvent>,
+    post: Post,
+    vote: number,
+    communityId: string
+  ) => void;
   // needs to return void because it's not an async function
-  onSelectPost: () => void;
+  onSelectPost?: (post: Post) => void;
   // return a promise because onDelete is communiticating with database
   // when it deletes the post, it should return a true or false value
   onDeletePost: (post: Post) => Promise<boolean>;
@@ -46,8 +52,15 @@ const PostItem: React.FC<PostItemProps> = ({
   const [loadingImage, setLoadingImage] = useState(true);
   const [error, setError] = useState("");
   const [loadingDelete, setLoadingDelete] = useState(false);
+  const router = useRouter();
+  // if no selectedpost, then it's true
+  const singlePostPage = !onSelectPost;
 
-  const handleDelete = async () => {
+  const handleDelete = async (
+    e: React.MouseEvent<HTMLDivElement, MouseEvent>
+  ) => {
+    // prevents button from rerouting the user
+    e.stopPropagation();
     setLoadingDelete(true);
     try {
       const success = await onDeletePost(post);
@@ -55,6 +68,9 @@ const PostItem: React.FC<PostItemProps> = ({
         console.log("Failed to delete post");
       }
       console.log("Post successfully deleted");
+      if (singlePostPage) {
+        router.push(`/r/${post.communityId}`);
+      }
     } catch (error: any) {
       console.log("handleDelete error", error.message);
       setError(error.message);
@@ -66,19 +82,21 @@ const PostItem: React.FC<PostItemProps> = ({
     <Flex
       border={"1px solid"}
       bg="white"
-      borderColor="gray.300"
-      borderRadius={4}
-      _hover={{ borderColor: "gray.500" }}
-      cursor="pointer"
-      onClick={onSelectPost}
+      borderColor={singlePostPage ? "white" : "gray.300"}
+      borderRadius={singlePostPage ? "4px 4px 0px 0px" : "4px"}
+      _hover={{ borderColor: singlePostPage ? "none" : "gray.400" }}
+      cursor={singlePostPage ? "unset" : "pointer"}
+      // this is needed to typescript is happy
+      //checks if onSelectPost exists, if so, calls the function
+      onClick={() => onSelectPost && onSelectPost(post)}
     >
       <Flex
         direction="column"
         align="center"
-        bg="gray.200"
+        bg={singlePostPage ? "none" : "gray.100"}
         p={2}
         width="40px"
-        borderRadius={4}
+        borderRadius={singlePostPage ? "0" : "3px 0px 0px 3px"}
       >
         <Icon
           as={
@@ -87,7 +105,7 @@ const PostItem: React.FC<PostItemProps> = ({
           color={userVoteValue === 1 ? "brand.100" : "gray.400"}
           fontSize={22}
           cursor="pointer"
-          onClick={() => onVote(post, 1, post.communityId)}
+          onClick={(e) => onVote(e, post, 1, post.communityId)}
         />
         <Text fontSize={"9pt"}>{post.voteStatus}</Text>
         <Icon
@@ -99,7 +117,7 @@ const PostItem: React.FC<PostItemProps> = ({
           color={userVoteValue === -1 ? "#4379ff" : "gray.400"}
           fontSize={22}
           cursor="pointer"
-          onClick={() => onVote(post, -1, post.communityId)}
+          onClick={(e) => onVote(e, post, -1, post.communityId)}
         />
       </Flex>
       <Flex direction="column" width="100%">
