@@ -27,9 +27,11 @@ import {
 import { firestore, storage } from "@/firebase/clientApp";
 import { getDownloadURL, ref, uploadString } from "firebase/storage";
 import useSelectFile from "@/hooks/useSelectFile";
+import { stringify } from "querystring";
 
 type NewPostProps = {
   user: User;
+  communityImageURL?: string;
 };
 
 const formTabs: tabItem[] = [
@@ -44,7 +46,7 @@ export type tabItem = {
   title: string;
   icon: typeof Icon.arguments;
 };
-const NewPost: React.FC<NewPostProps> = ({ user }) => {
+const NewPost: React.FC<NewPostProps> = ({ user, communityImageURL }) => {
   const router = useRouter();
   const [selectedTab, setSelectedTab] = useState(formTabs[0].title);
   const [textInputs, setTextInputs] = useState({ title: "", body: "" });
@@ -59,6 +61,7 @@ const NewPost: React.FC<NewPostProps> = ({ user }) => {
     const newPost: Post = {
       // typecasted here because we know it's going to be a string always
       communityId: communityId as string,
+      communityImageURL: communityImageURL || "",
       creatorId: user.uid,
       // user.email! is needed telling typscript that there is always going to be an user
       // because the form itself only shows up when there is an user

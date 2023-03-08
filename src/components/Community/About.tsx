@@ -16,7 +16,6 @@ import { doc, updateDoc } from "firebase/firestore";
 import { getDownloadURL, ref, uploadString } from "firebase/storage";
 import moment from "moment";
 import Link from "next/link";
-import { useRouter } from "next/router";
 import React, { useRef, useState } from "react";
 import { useAuthState } from "react-firebase-hooks/auth";
 import { FaReddit } from "react-icons/fa";
@@ -106,11 +105,13 @@ const About: React.FC<AboutProps> = ({ communityData }) => {
             )}
           </Flex>
           {/* legacyBehavior is needed to the button gets the parent's style (flexGrow) and stretches to fill*/}
-          <Link href={`/r/${communityData.id}/submit`} legacyBehavior>
-            <Button mt={3} height="30px">
-              Create Post
-            </Button>
-          </Link>
+          {user && (
+            <Link href={`/r/${communityData.id}/submit`} legacyBehavior>
+              <Button mt={3} height="30px">
+                Create Post
+              </Button>
+            </Link>
+          )}
           {user?.uid === communityData.creatorId && (
             <>
               <Divider />
