@@ -1,12 +1,16 @@
+import { authModalState } from "@/atoms/authModalAtom";
+import { auth } from "@/firebase/clientApp";
 import { Flex, Box, Icon, Stack, Text, Spinner } from "@chakra-ui/react";
 import { Timestamp } from "@google-cloud/firestore";
 import moment from "moment";
 import React from "react";
+import { useAuthState } from "react-firebase-hooks/auth";
 import { FaReddit } from "react-icons/fa";
 import {
   IoArrowDownCircleOutline,
   IoArrowUpCircleOutline,
 } from "react-icons/io5";
+import { useSetRecoilState } from "recoil";
 
 export type Comment = {
   id: string;
@@ -32,6 +36,9 @@ const CommentItem: React.FC<CommentItemProps> = ({
   loadingDelete,
   userId,
 }) => {
+  const setAuthModalState = useSetRecoilState(authModalState);
+  const [user] = useAuthState(auth);
+
   return (
     <Flex>
       <Box mr={2}>
@@ -47,8 +54,23 @@ const CommentItem: React.FC<CommentItemProps> = ({
         </Stack>
         <Text fontSize="10pt">{comment.text}</Text>
         <Stack direction="row" align="center" cursor="pointer" color="gray.500">
-          <Icon as={IoArrowUpCircleOutline} />
-          <Icon as={IoArrowDownCircleOutline} />
+          {user ? (
+            <>
+              <Icon as={IoArrowUpCircleOutline} />
+              <Icon as={IoArrowDownCircleOutline} />
+            </>
+          ) : (
+            <>
+              <Icon
+                onClick={() => setAuthModalState({ open: true, view: "login" })}
+                as={IoArrowUpCircleOutline}
+              />
+              <Icon
+                onClick={() => setAuthModalState({ open: true, view: "login" })}
+                as={IoArrowDownCircleOutline}
+              />
+            </>
+          )}
           {userId === comment.creatorId && (
             <>
               <Text fontSize="9pt" _hover={{ color: "blue.500" }}>

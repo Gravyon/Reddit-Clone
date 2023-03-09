@@ -90,7 +90,7 @@ const PostItem: React.FC<PostItemProps> = ({
       borderRadius={singlePostPage ? "4px 4px 0px 0px" : "4px"}
       _hover={{ borderColor: singlePostPage ? "none" : "gray.400" }}
       cursor={singlePostPage ? "unset" : "pointer"}
-      // this is needed to typescript is happy
+      // this is needed so typescript is happy
       //checks if onSelectPost exists, if so, calls the function
       onClick={() => onSelectPost && onSelectPost(post)}
     >

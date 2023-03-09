@@ -1,5 +1,7 @@
+import { authModalState } from "@/atoms/authModalAtom";
 import { Community, communityState } from "@/atoms/communitiesAtom";
 import { auth, firestore, storage } from "@/firebase/clientApp";
+import useDirectory from "@/hooks/useDirectory";
 import useSelectFile from "@/hooks/useSelectFile";
 import {
   Box,
@@ -16,6 +18,7 @@ import { doc, updateDoc } from "firebase/firestore";
 import { getDownloadURL, ref, uploadString } from "firebase/storage";
 import moment from "moment";
 import Link from "next/link";
+import { useRouter } from "next/router";
 import React, { useRef, useState } from "react";
 import { useAuthState } from "react-firebase-hooks/auth";
 import { FaReddit } from "react-icons/fa";
@@ -32,6 +35,9 @@ const About: React.FC<AboutProps> = ({ communityData }) => {
   const { selectedFile, setSelectedFile, onSelectFile } = useSelectFile();
   const [uploadingImage, setUploadingImage] = useState(false);
   const setCommunityStateValue = useSetRecoilState(communityState);
+  const setAuthModalState = useSetRecoilState(authModalState);
+  const { toggleMenuOpen } = useDirectory();
+  const router = useRouter();
 
   const onUpdateImage = async () => {
     if (!selectedFile) return;
@@ -57,6 +63,20 @@ const About: React.FC<AboutProps> = ({ communityData }) => {
       console.log("onUpdateImage error", error);
     }
     setUploadingImage(false);
+  };
+
+  const onClick = () => {
+    if (!user) {
+      setAuthModalState({ open: true, view: "login" });
+      return;
+    }
+    const { communityId } = router.query;
+    if (communityId) {
+      router.push(`/r/${communityId}/submit`);
+      return;
+    }
+    // open directory menu
+    toggleMenuOpen();
   };
 
   return (
@@ -105,12 +125,16 @@ const About: React.FC<AboutProps> = ({ communityData }) => {
             )}
           </Flex>
           {/* legacyBehavior is needed to the button gets the parent's style (flexGrow) and stretches to fill*/}
-          {user && (
+          {user ? (
             <Link href={`/r/${communityData.id}/submit`} legacyBehavior>
               <Button mt={3} height="30px">
                 Create Post
               </Button>
             </Link>
+          ) : (
+            <Button mt={3} height="30px" onClick={onClick}>
+              Create Post
+            </Button>
           )}
           {user?.uid === communityData.creatorId && (
             <>
