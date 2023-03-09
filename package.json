@@ -22,6 +22,7 @@
     "eslint": "^8.34.0",
     "eslint-plugin-react": "^7.32.2",
     "firebase": "^9.17.1",
+    "firebase-functions": "^4.2.1",
     "framer-motion": "^9.0.4",
     "moment": "^2.29.4",
     "next": "13.1.6",
