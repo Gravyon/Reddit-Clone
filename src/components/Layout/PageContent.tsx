@@ -11,7 +11,6 @@ const PageContent: React.FC<PageContentProps> = ({ children }) => {
   return (
     <Flex justify="center" p="16px 0px">
       <Flex width="95%" justify="center" maxWidth="860px">
-        {/* Lefthand side */}
         {/* this needs to be expressed this way so typescript stops complaining */}
         <Flex
           direction="column"
@@ -20,9 +19,12 @@ const PageContent: React.FC<PageContentProps> = ({ children }) => {
         >
           {children && children[0 as keyof typeof children]}
         </Flex>
-        {/* Righthand side */}
         {/* this needs to be expressed this way so typescript stops complaining */}
-        <Flex flex="column" display={{ base: "none", md: "flex" }} flexGrow={1}>
+        <Flex
+          direction="column"
+          display={{ base: "none", md: "flex" }}
+          flexGrow={1}
+        >
           {children && children[1 as keyof typeof children]}
         </Flex>
       </Flex>
