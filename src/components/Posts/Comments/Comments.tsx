@@ -136,7 +136,11 @@ const Comments: React.FC<CommentsProps> = ({
   }, [selectedPost]);
 
   return (
-    <Box bg="white" borderRadius="0px 0px 4px 4px" p={2}>
+    <Box
+      // bg="white"
+      borderRadius="0px 0px 4px 4px"
+      p={2}
+    >
       <Flex
         direction="column"
         pl={10}

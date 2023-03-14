@@ -21,14 +21,18 @@ const SearchInput: React.FC<SearchInputProps> = ({ user }) => {
           fontSize="10pt"
           // need underscore to access the property
           _placeholder={{ color: "gray.500" }}
-          _hover={{ bg: "white", border: "1px solid", borderColor: "blue.500" }}
+          _hover={{
+            // bg: "white",
+            border: "1px solid",
+            borderColor: "blue.500",
+          }}
           _focus={{
             outline: "none",
             border: "1px",
             borderColor: "blue.500",
           }}
           height="34px"
-          bg="gray.50"
+          // bg="gray.50"
         />
       </InputGroup>
     </Flex>

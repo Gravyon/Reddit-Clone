@@ -106,7 +106,14 @@ const NewPost: React.FC<NewPostProps> = ({ user, communityImageURL }) => {
   };
 
   return (
-    <Flex direction="column" background="white" borderRadius={4} mt={2}>
+    <Flex
+      direction="column"
+      // background="white"
+      borderRadius={4}
+      mt={2}
+      // borderColor="white"
+      // border="gray 1px solid"
+    >
       <Flex width="100%">
         {formTabs.map((tab) => (
           <TabItem

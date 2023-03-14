@@ -48,7 +48,7 @@ const Recommendations: React.FC = () => {
     <Flex
       flexGrow={1}
       direction="column"
-      bg="white"
+      // bg="white"
       borderRadius={4}
       border="1px solid"
       borderColor="gray.300"

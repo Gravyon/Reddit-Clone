@@ -39,7 +39,7 @@ const Communities: React.FC<CommunitiesProps> = () => {
         <MenuItem
           width={"100%"}
           fontSize={10}
-          _hover={{ bg: "gray.100" }}
+          _hover={{ bg: "blue.500" }}
           onClick={() => setOpen(true)}
         >
           <Flex align={"center"}>

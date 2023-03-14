@@ -6,7 +6,7 @@ const PersonalHome: React.FC = () => {
   return (
     <Flex
       direction="column"
-      bg="white"
+      // bg="white"
       borderRadius={4}
       cursor="pointer"
       border="1px solid"

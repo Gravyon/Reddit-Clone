@@ -33,7 +33,7 @@ const CreatePostLink: React.FC = () => {
     <Flex
       justify="space-evenly"
       align="center"
-      bg="white"
+      // bg="white"
       height="56px"
       borderRadius={4}
       border="1px solid"
@@ -47,17 +47,17 @@ const CreatePostLink: React.FC = () => {
         fontSize="10pt"
         _placeholder={{ color: "gray.500" }}
         _hover={{
-          bg: "white",
+          // bg: "white",
           border: "1px solid",
           borderColor: "blue.500",
         }}
         _focus={{
           outline: "none",
-          bg: "white",
+          // bg: "white",
           border: "1px solid",
           borderColor: "blue.500",
         }}
-        bg="gray.50"
+        // bg="gray.50"
         borderColor="gray.200"
         height="36px"
         borderRadius={4}

@@ -5,7 +5,7 @@ const Premium: React.FC = () => {
   return (
     <Flex
       direction="column"
-      bg="white"
+      // bg="white"
       borderRadius={4}
       cursor="pointer"
       p="12px"

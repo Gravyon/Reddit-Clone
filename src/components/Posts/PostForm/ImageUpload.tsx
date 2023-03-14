@@ -39,8 +39,8 @@ const ImageUpload: React.FC<ImageUploadProps> = ({
           justify="center"
           p={20}
           align="center"
-          border="1px dashed"
-          borderColor="gray.200"
+          border="gray 1px dashed"
+          // borderColor="gray.200"
           borderRadius={4}
         >
           <Button

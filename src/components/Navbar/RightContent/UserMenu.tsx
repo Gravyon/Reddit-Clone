@@ -3,6 +3,7 @@ import { communityState } from "@/atoms/communitiesAtom";
 import { auth } from "@/firebase/clientApp";
 import { ChevronDownIcon } from "@chakra-ui/icons";
 import {
+  Button,
   Flex,
   Icon,
   Menu,
@@ -10,7 +11,9 @@ import {
   MenuDivider,
   MenuItem,
   MenuList,
+  Switch,
   Text,
+  useColorMode,
 } from "@chakra-ui/react";
 import { signOut, User } from "firebase/auth";
 import React from "react";
@@ -20,6 +23,7 @@ import { IoSparkles } from "react-icons/io5";
 import { MdOutlineLogin } from "react-icons/md";
 import { VscAccount } from "react-icons/vsc";
 import { useSetRecoilState } from "recoil";
+import { ColorModeSwitcher } from "./ColorModeSwitcher";
 
 type UserMenuProps = { user?: User | null };
 
@@ -71,7 +75,17 @@ const UserMenu: React.FC<UserMenuProps> = ({ user }) => {
           <ChevronDownIcon />
         </Flex>
       </MenuButton>
+
       <MenuList>
+        <Flex
+          fontSize={"10pt"}
+          fontWeight={700}
+          _hover={{ bg: "blue.500", color: "white" }}
+          align="center"
+        >
+          <Text>Color</Text>
+          <ColorModeSwitcher ml={-2} />
+        </Flex>
         {user ? (
           <>
             <MenuItem

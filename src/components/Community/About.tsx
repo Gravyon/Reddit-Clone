@@ -94,7 +94,12 @@ const About: React.FC<AboutProps> = ({ communityData }) => {
         </Text>
         <Icon as={HiOutlineDotsHorizontal} />
       </Flex>
-      <Flex direction="column" p={3} bg="white" borderRadius="0px 0px 4px 4px">
+      <Flex
+        direction="column"
+        p={3}
+        // bg="white"
+        borderRadius="0px 0px 4px 4px"
+      >
         <Stack>
           <Flex width="100%" p={2} fontSize="10pt" fontWeight={700}>
             <Flex direction="column" flexGrow={1}>

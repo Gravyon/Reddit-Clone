@@ -13,7 +13,7 @@ const Navbar: React.FC = () => {
   const { onSelectMenuItem } = useDirectory();
   return (
     <Flex
-      bg="white"
+      // bg="white"
       height="44px"
       padding="6px 12px"
       justify={{ md: "space-between" }}

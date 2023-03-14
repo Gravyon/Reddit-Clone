@@ -17,7 +17,7 @@ const TabItem: React.FC<TabItemProps> = ({ tab, selected, setSelectedTab }) => {
       p="14px 0px"
       cursor="pointer"
       fontWeight={700}
-      _hover={{ bg: "gray.100" }}
+      _hover={{ bg: "gray.300" }}
       color={selected ? "blue.500" : "gray.500"}
       borderWidth={selected ? "0px 1px 2px 0px" : "0px 1px 1px 0px"}
       borderBottom={selected ? "blue.500" : "gray.200"}

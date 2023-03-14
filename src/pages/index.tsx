@@ -23,7 +23,6 @@ import {
 import type { NextPage } from "next";
 import { useEffect, useState } from "react";
 import { useAuthState } from "react-firebase-hooks/auth";
-import { useRecoilValue } from "recoil";
 
 const Home: NextPage = () => {
   const [user, loadingUser] = useAuthState(auth);
@@ -152,8 +151,8 @@ const Home: NextPage = () => {
         spacing={5}
         // position="sticky" top="14px"
       >
-        <Recommendations />
         <Premium />
+        <Recommendations />
         <PersonalHome />
       </Stack>
     </PageContent>
