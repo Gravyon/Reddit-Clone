@@ -35,7 +35,7 @@ const UserMenu: React.FC<UserMenuProps> = ({ user }) => {
   };
 
   return (
-    <Menu>
+    <Menu closeOnBlur closeOnSelect={false}>
       <MenuButton
         cursor={"pointer"}
         padding="0px 6px"
@@ -77,15 +77,15 @@ const UserMenu: React.FC<UserMenuProps> = ({ user }) => {
       </MenuButton>
 
       <MenuList>
-        <Flex
+        <MenuItem
           fontSize={"10pt"}
           fontWeight={700}
           _hover={{ bg: "blue.500", color: "white" }}
-          align="center"
         >
-          <Text>Color</Text>
-          <ColorModeSwitcher ml={-2} />
-        </Flex>
+          <ColorModeSwitcher />
+        </MenuItem>
+        {/* <Text>Dark mode</Text> */}
+
         {user ? (
           <>
             <MenuItem
