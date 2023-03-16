@@ -217,7 +217,10 @@ const CreateCommunityModal: React.FC<CreateCommunityModalProps> = ({
               </Box>
             </ModalBody>
           </Box>
-          <ModalFooter bg="gray.100" borderRadius="0px 0px 10px 10px">
+          <ModalFooter
+            // bg="gray.100"
+            borderRadius="0px 0px 10px 10px"
+          >
             <Button
               variant="outline"
               height="30px"
