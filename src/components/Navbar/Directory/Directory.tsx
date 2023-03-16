@@ -10,7 +10,6 @@ import {
   Image,
 } from "@chakra-ui/react";
 import React from "react";
-import { TiHome } from "react-icons/ti";
 import Communities from "./Communities";
 
 const UserMenu: React.FC = () => {
@@ -42,7 +41,7 @@ const UserMenu: React.FC = () => {
             ) : (
               <Icon
                 as={directoryState.selectedMenuItem.icon}
-                color={directoryState.selectedMenuItem.iconColor}
+                // color={directoryState.selectedMenuItem.iconColor}
                 fontSize={24}
                 mr={{ base: 1, md: 2 }}
               />

@@ -13,7 +13,6 @@ import usePosts from "@/hooks/usePosts";
 import { Stack } from "@chakra-ui/react";
 import {
   collection,
-  getDoc,
   getDocs,
   limit,
   orderBy,

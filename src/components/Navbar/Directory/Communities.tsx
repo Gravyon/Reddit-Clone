@@ -11,7 +11,7 @@ const Communities: React.FC = () => {
   const [open, setOpen] = useState(false);
   const mySnippets = useRecoilValue(communityState).mySnippets;
   return (
-    <Menu closeOnBlur={true}>
+    <Menu closeOnBlur>
       <CreateCommunityModal open={open} handleClose={() => setOpen(false)} />
       <Box mt={3} mb={4}>
         <Text pl={3} mb={1} fontSize="7pt" fontWeight={500} color="gray.500">

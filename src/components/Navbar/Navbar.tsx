@@ -1,7 +1,7 @@
 import { defaultMenuItem } from "@/atoms/directoryMenuAtom";
 import { auth } from "@/firebase/clientApp";
 import useDirectory from "@/hooks/useDirectory";
-import { Flex, Image } from "@chakra-ui/react";
+import { Flex, Image, Text } from "@chakra-ui/react";
 import React from "react";
 import { useAuthState } from "react-firebase-hooks/auth";
 import Directory from "./Directory/Directory";
@@ -26,13 +26,16 @@ const Navbar: React.FC = () => {
         onClick={() => onSelectMenuItem(defaultMenuItem)}
       >
         <Image src="/images/redditFace.svg" alt="reddit-face" height="30px" />
-        <Image
+        {/* <Image
           src="/images/redditText.svg"
           alt="reddit-text"
           height="46px"
           // unset is basically the opposite of display: none
           display={{ base: "none", md: "unset" }}
-        />
+        /> */}
+        <Text display={{ base: "none", md: "unset" }} ml={2} fontSize={20}>
+          Reddit
+        </Text>
       </Flex>
       <Directory />
       <SearchInput user={user} />
